@@ -1,0 +1,6 @@
+[Artist] - [Album] - [Year] - [Genre]
+Song Titles
+.
+.
+.
+.

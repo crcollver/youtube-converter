@@ -19,6 +19,17 @@ def progress(d):
 
 
 def convert(download_path, url, dir_name='%(playlist_title)s'):
+    """
+    uses the youtube-dl library to convert a playlist to mp3
+
+    PARAMS:
+    download_path -- the path to download the playlist
+    url -- the youtube url to convert
+    dir_name -- formatted name of directory for mp3s
+
+    RETURNS:
+    string -- full path of playlist directory
+    """
     file_format = '%(playlist_index)s - %(title)s.%(ext)s'
     if download_path:
         full_dir_path = f'{os.path.realpath(download_path)}/{dir_name}'
@@ -41,7 +52,17 @@ def convert(download_path, url, dir_name='%(playlist_title)s'):
 
 
 def parse_title(file_path):
-    # [artist] - [album] - [year] - [genre]
+    """
+    parses the first line of the text file
+    [artist] - [album] - [year] - [genre]
+
+    PARAMS:
+    file_path -- path of the text file containing the metadata
+
+    RETURNS:
+    None -- if no file was provided
+    dictionary -- filling empty values with "" and stripping whitespace
+    """
     if file_path:
         file = os.path.realpath(file_path)
         with open(file) as f:
@@ -54,6 +75,16 @@ def parse_title(file_path):
 
 
 def parse_song_titles(file_path):
+    """
+    parses song titles from the provided text file, starts at second line
+
+    PARAMS:
+    file_path -- path of the text file containing the metadata
+
+    RETURNS:
+    None -- if no file was provided
+    list -- stripped of whitespace
+    """
     if file_path:
         file = os.path.realpath(file_path)
         with open(file) as f:
@@ -64,6 +95,14 @@ def parse_song_titles(file_path):
 
 
 def add_meta(playlist_path, title_list, all_meta_data):
+    """
+    adds metadata using mutagen EasyID3
+
+    PARAMS:
+    playlist_path -- the directory that the mp3's reside in
+    title_list -- the list of parsed titles from the text file
+    all_meta_data -- artist, album, genre, and year information
+    """
     all_mp3s = os.listdir(playlist_path)
     for index, filename in enumerate(all_mp3s):
         audiofile = EasyID3(f'{playlist_path}/{filename}')
